@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Kelola Akun Admin</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #1877f2;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #1877f2;
+            color: #fff;
+        }
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-edit {
+            background-color: #ffc107;
+            color: #fff;
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: #fff;
+        }
+        .btn-add {
+            background-color: #28a745;
+            color: #fff;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kelola Akun Admin</h1>
+    <button class="btn-add" onclick="openAddModal()">Tambah Admin</button>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody id="admin-list">
+            <!-- Data akan dimuat dari JavaScript -->
+        </tbody>
+    </table>
+
+    <!-- Modal untuk Tambah/Edit -->
+    <div id="modal" style="display: none;">
+        <h2 id="modal-title"></h2>
+        <form id="admin-form">
+            <input type="hidden" id="admin-id">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" required><br><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" required><br><br>
+            <button type="submit">Simpan</button>
+            <button type="button" onclick="closeModal()">Batal</button>
+        </form>
+    </div>
+
+    <script>
+        const API_URL = './'; // Ganti dengan URL API Anda
+
+        document.addEventListener('DOMContentLoaded', loadAdmins);
+
+        // Memuat daftar admin
+        function loadAdmins() {
+    fetch('get_admin.php')
+        .then(res => res.json())
+        .then(data => {
+            const adminList = document.getElementById('admin-list');
+            adminList.innerHTML = ''; // Kosongkan daftar sebelum memuat data baru
+
+            if (data.length === 0) {
+                adminList.innerHTML = `<tr><td colspan="3">Tidak ada akun admin.</td></tr>`;
+                return;
+            }
+
+            data.forEach(admin => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${admin.id}</td>
+                    <td>${admin.username}</td>
+                    <td>${admin.password}
+                    <td>
+                        <button class="btn-edit" onclick="openEditModal(${admin.id}, '${admin.username}', '${admin.password}')">Edit</button>
+                        <button class="btn-delete" onclick="deleteAdmin(${admin.id})">Hapus</button>
+                    </td>
+                `;
+                adminList.appendChild(row);
+            });
+        })
+        .catch(err => {
+            console.error("Error loading admins:", err);
+        });
+}
+
+        // Membuka modal tambah admin
+        function openAddModal() {
+            document.getElementById('modal-title').innerText = 'Tambah Admin';
+            document.getElementById('admin-id').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Membuka modal edit admin
+        function openEditModal(id, username) {
+            document.getElementById('modal-title').innerText = 'Edit Admin';
+            document.getElementById('admin-id').value = id;
+            document.getElementById('username').value = username;
+            document.getElementById('password').value = '';
+            document.getElementById('modal').style.display = 'block';
+        }
+
+        // Menutup modal
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        // Menyimpan admin (tambah/edit)
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const id = document.getElementById('admin-id').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const formData = new FormData();
+            formData.append('id', id);
+            formData.append('username', username);
+            formData.append('password', password);
+
+            fetch(API_URL + 'save.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert(data.message);
+                closeModal();
+                loadAdmins();
+            });
+        });
+
+        // Menghapus admin
+        function deleteAdmin(id) {
+            if (confirm('Yakin ingin menghapus admin ini?')) {
+                fetch(API_URL + 'delete.php?id=' + id, { method: 'GET' })
+                    .then(res => res.json())
+                    .then(data => {
+                        alert(data.message);
+                        loadAdmins();
+                    });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard Admin - Rumah Accu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        html,body { height:100%; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0ecff, #f9fafc 70%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        header {
+            background: #1877f2;
+            color: white;
+            padding: 24px 0 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 14px #b3c4e7;
+            position: relative;
+        }
+        .logo {
+            width: 110px;
+            margin-bottom: 8px;
+        }
+        h1 {
+            margin: 0 0 6px 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+        #logout-btn {
+            position: absolute;
+            top: 18px;
+            right: 32px;
+            background: #e85c4a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 22px;
+            font-size: 15px;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 2px 8px #bd232346;
+            transition: background .15s;
+        }
+        #logout-btn:hover { background: #c53c2b;}
+        nav {
+            background: #fff;
+            padding: 8px 0 8px 0;
+            text-align: center;
+            box-shadow: 0 1px 8px #e2e6e9;
+        }
+        nav a {
+            display: inline-block;
+            margin: 0 18px;
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05rem;
+            padding: 4px 7px;
+            border-radius: 4px;
+            transition: background .15s;
+        }
+        nav a:hover { background: #e6eeff; }
+        #dashboard-container {
+            max-width: 1120px;
+            margin: 36px auto 0 auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 3px 18px #bdd7fa;
+            padding: 32px 22px;
+        }
+        h2 {
+            color: #1877f2;
+            margin-top: 0;
+            margin-bottom: 16px;
+        }
+        #products-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+        .product-card {
+            background: linear-gradient(135deg, #fcfdff 60%, #e7f0fe 100%);
+            border: 1.5px solid #dbeafe;
+            border-radius: 10px;
+            box-shadow: 0 2px 13px #dae9fa;
+            padding: 18px 20px 16px 20px;
+            transition: transform .12s, box-shadow .12s;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .product-card:hover {
+            transform: translateY(-3px) scale(1.025);
+            box-shadow: 0 5px 23px #b3c9e7;
+        }
+        .product-title {
+            font-weight: bold;
+            color: #1877f2;
+            font-size: 1.15rem;
+        }
+        .product-cat {
+            font-size: 13px;
+            color: #5c6d84;
+            margin-bottom: 4px;
+        }
+        .product-stock {
+            font-size: 13px;
+            color: #177c34;
+        }
+        .product-desc {
+            font-size: 14px;
+            color: #444;
+            margin: 7px 0 10px 0;
+        }
+        .product-price {
+            font-size: 1.03rem;
+            font-weight: bold;
+            color: #e07b00;
+        }
+        @media (max-width: 700px) {
+            #dashboard-container { padding: 15px 2vw;}
+            #products-list { grid-template-columns: 1fr; }
+            .product-card { min-height: 140px;}
+            #logout-btn { right: 10px; top:10px; padding: 7px 12px;}
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo BARU.png" alt="Logo Pemesanan Accu" class="logo">
+        <h1>Rumah Accu</h1>
+        <button id="logout-btn" onclick="logout()">Logout</button>
+    </header>
+    <nav>
+        <a href="admin_dashboard.html" style="background:#e7f4ff;">Dashboard</a>
+        <a href="tambah_produk.html">Tambah Produk</a>
+        <a href="admin_order.html">Pesanan</a>
+        <a href="chat.html">Live Chat</a>
+    </nav>
+    <div id="dashboard-container">
+        <h2>Dashboard</h2>
+        <div id="products-list"></div>
+    </div>
+    <script>
+    function formatRupiah(angka) {
+        angka = Number(angka) || 0;
+        return 'Rp.' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+    function loadProducts() {
+        fetch('products.php')
+        .then(res => res.json())
+        .then(products => {
+            let html = '';
+            if (!products.length) {
+                html = '<i>Tidak ada produk di-upload.</i>';
+            } else {
+                products.forEach(prod => {
+                    html += `
+                    <div class="product-card">
+                        <div class="product-title">${prod.name}</div>
+                        <div class="product-cat">${prod.category || 'Lainnya'}</div>
+                        <div class="product-desc">${prod.description || ''}</div>
+                        <div class="product-stock">Stok: ${prod.stock}</div>
+                        <div class="product-price">${formatRupiah(prod.price)}</div>
+                    </div>
+                    `;
+                });
+            }
+            document.getElementById('products-list').innerHTML = html;
+        });
+    }
+    function logout() {
+        // Ganti endpoint jika perlu
+        fetch('logout.php', { method: 'POST' })
+        .then(res => res.json())
+        .then(data => { window.location.href = 'login.html'; });
+    }
+    document.addEventListener('DOMContentLoaded', loadProducts);
+    </script>
+</body>
+</html>

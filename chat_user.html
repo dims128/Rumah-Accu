@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Live Chat Admin - Rumah Accu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #e0ecff, #f9fafc 70%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        header {
+            background: #1877f2;
+            color: white;
+            padding: 24px 0 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 14px #b3c4e7;
+            position: relative;
+        }
+        .logo {
+            width: 110px;
+            margin-bottom: 8px;
+        }
+        h1 { margin: 0 0 6px 0; font-size: 2.2rem;}
+        #logout-btn {
+            position: absolute;
+            top: 18px;
+            right: 32px;
+            background: #e85c4a;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 22px;
+            font-size: 15px;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 2px 8px #bd232346;
+            transition: background .15s;
+        }
+        #logout-btn:hover { background: #c53c2b;}
+        nav {
+            background: #fff;
+            padding: 8px 0 8px 0;
+            text-align: center;
+            box-shadow: 0 1px 8px #e2e6e9;
+        }
+        nav a {
+            display: inline-block;
+            margin: 0 18px;
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05rem;
+            padding: 4px 7px;
+            border-radius: 4px;
+            transition: background .15s;
+        }
+        nav a:hover { background: #e6eeff; }
+        #chat-container {
+            max-width: 600px;
+            margin: 36px auto 0 auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 3px 18px #bdd7fa;
+            padding: 32px 22px;
+        }
+        #chat-box {
+            background: #f7fafd;
+            border-radius: 8px;
+            border: 1px solid #b4c9e9;
+            min-height: 220px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 14px 12px;
+            margin-bottom: 18px;
+            font-size: 15px;
+        }
+        #chat-input-row {
+            display: flex;
+            gap: 7px;
+        }
+        #chat-input {
+            flex: 1;
+            padding: 9px;
+            font-size: 15px;
+            border-radius: 5px;
+            border: 1px solid #b4c9e9;
+        }
+        #send-btn {
+            background: #1877f2; color: #fff; border: none; border-radius: 5px;
+            padding: 9px 15px; font-size: 15px; cursor: pointer;
+        }
+        #send-btn:hover { background: #145db2; }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo BARU.png" alt="Logo Pemesanan Accu" class="logo">
+        <h1>Rumah Accu - Live Chat Admin</h1>
+        <button id="logout-btn" onclick="logout()">Logout</button>
+    </header>
+    <nav>
+        <a href="user dashboard.html" class="active">Beranda</a>
+        <a href="user_transaksi.html">Transaksi</a>
+        <a href="chat_user.html">Live Chat</a>
+    </nav>
+    <div id="chat-container">
+        <div id="chat-box"></div>
+        <div id="chat-input-row">
+            <input type="text" id="chat-input" placeholder="Tulis pesan..." autocomplete="off">
+            <button id="send-btn" type="button">Kirim</button>
+        </div>
+    </div>
+    <script>
+    function logout() {
+        fetch('logout.php', { method: 'POST' })
+        .then(res => res.json())
+        .then(() => { window.location.href = 'login.html'; });
+    }
+
+    // XSS prevention
+    function escapeHtml(text) {
+        var div = document.createElement("div");
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function loadChat() {
+        fetch('chat_user.php?order_id=0')
+        .then(res => res.json())
+        .then(msgs => {
+            let chatHtml = '';
+            msgs.forEach(m => {
+                chatHtml += `<div style="margin-bottom:8px;">
+                    <b>${escapeHtml(m.sender)}:</b> ${escapeHtml(m.message)}
+                    <br><small style="color:#888;">${m.created_at || ''}</small>
+                </div>`;
+            });
+            document.getElementById('chat-box').innerHTML = chatHtml || "<i>Belum ada pesan.</i>";
+            document.getElementById('chat-box').scrollTop = document.getElementById('chat-box').scrollHeight;
+        })
+        .catch(() => {
+            document.getElementById('chat-box').innerHTML = "<i>Gagal memuat chat!</i>";
+        });
+    }
+
+    function sendChat() {
+        var input = document.getElementById('chat-input');
+        var msg = input.value.trim();
+        if (!msg) return;
+        var fd = new FormData();
+        fd.append('order_id', 0);
+        fd.append('message', msg);
+        fetch('cht.php', {
+            method: 'POST',
+            body: fd
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                input.value = '';
+                loadChat();
+            } else {
+                alert(response.error || 'Gagal mengirim chat!');
+            }
+        })
+        .catch(() => alert('Gagal mengirim chat!'));
+    }
+
+    // Auto load chat saat halaman dibuka dan enter untuk kirim
+    window.onload = function() {
+        loadChat();
+        document.getElementById('send-btn').onclick = sendChat;
+        document.getElementById('chat-input').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') sendChat();
+        });
+    };
+    </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Accu Order App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+        }
+        #checkout-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 14px #ccc;
+            padding: 20px;
+        }
+        h2 {
+            color: #1877f2;
+            margin-top: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table th, table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        #confirm-btn {
+            background: #1877f2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #confirm-btn:hover {
+            background: #145db2;
+        }
+    </style>
+</head>
+<body>
+    <div id="checkout-container">
+    <h2>Checkout</h2>
+    <table>
+        <tr>
+            <th>Produk</th>
+            <td id="product-name"></td>
+        </tr>
+        <tr>
+            <th>Harga</th>
+            <td id="product-price"></td>
+        </tr>
+        <tr>
+            <th>Jumlah</th>
+            <td>
+                <input type="number" id="product-quantity" value="1" min="1" style="width: 60px;">
+            </td>
+        </tr>
+        <tr>
+            <th>Total</th>
+            <td id="product-total"></td>
+        </tr>
+        <tr>
+            <th>Alamat Pengiriman</th>
+            <td>
+                <textarea id="shipping-address" rows="3" placeholder="Masukkan alamat pengiriman lengkap"></textarea>
+            </td>
+        </tr>
+    </table>
+    <button id="confirm-btn" onclick="processCheckout()">Konfirmasi Pesanan</button>
+</div>
+
+    <script>
+        const API_URL = './';
+        let productId = new URLSearchParams(window.location.search).get('id');
+
+        // Fungsi format rupiah (Rp.50.000)
+        function formatRupiah(angka) {
+            // Pastikan input adalah angka dulu
+            angka = Number(angka) || 0;
+            return 'Rp.' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const productId = new URLSearchParams(window.location.search).get('id');
+            if (!productId) {
+                alert('ID produk tidak valid!');
+                return;
+            }
+
+            loadProductDetails(productId);
+
+            // Event listener untuk memperbarui total harga
+            document.getElementById('product-quantity').addEventListener('input', function () {
+                const quantity = parseInt(this.value) || 1; // Ambil jumlah pesanan
+                const price = parseInt(this.dataset.price) || 0; // Ambil harga dari dataset
+                document.getElementById('product-total').textContent = formatRupiah(quantity * price); // Perbarui total harga
+            });
+        });
+
+        function loadProductDetails(productId) {
+            fetch(`products.php?id=${productId}`)
+                .then(res => res.json())
+                .then(product => {
+                    if (product.error) {
+                        alert(product.error);
+                        return;
+                    }
+
+                    // Atur data produk ke elemen HTML
+                    document.getElementById('product-name').textContent = product.name;
+                    document.getElementById('product-price').textContent = formatRupiah(product.price);
+                    document.getElementById('product-total').textContent = formatRupiah(product.price);
+                    document.getElementById('product-quantity').dataset.price = product.price; // Simpan harga ke dataset
+                })
+                .catch(err => {
+                    console.error('Kesalahan:', err);
+                    alert('Gagal memuat detail produk!');
+                });
+        }
+
+        function confirmOrder() {
+            const productId = new URLSearchParams(window.location.search).get('id');
+            const quantity = parseInt(document.getElementById('product-quantity').value) || 1;
+            // Ambil harga tanpa karakter selain angka
+            const totalPrice = parseInt(document.getElementById('product-total').textContent.replace(/\D/g, '')) || 0;
+            // const paymentMethod = document.getElementById('payment-method').value;
+            const shippingAddress = document.getElementById('shipping-address').value;
+
+            if (!shippingAddress.trim()) {
+                alert('Alamat pengiriman tidak boleh kosong!');
+                return;
+            }
+
+            const orderData = {
+                user_id: 1, // Ini harus diatur sesuai user yang login
+                product_id: productId,
+                quantity: quantity,
+                total_price: totalPrice,
+                address: shippingAddress
+            };
+
+            // Debugging data
+            console.log('Order data:', orderData);
+
+            fetch('save_order.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    alert('Pesanan berhasil disimpan!');
+                } else {
+                    alert('Gagal menyimpan pesanan: ' + response.message);
+                }
+            })
+            .catch(err => {
+                console.error('Kesalahan:', err);
+                alert('Terjadi kesalahan saat menyimpan pesanan. Silakan coba lagi.');
+            });
+        }
+        
+        // Tidak perlu calculateTotal() karena sudah dihandle di event input
+
+        function processCheckout() {
+            const quantity = parseInt(document.getElementById('product-quantity').value) || 1;
+            const address = document.getElementById('shipping-address').value.trim();
+
+            if (!address) {
+                alert('Alamat pengiriman harus diisi!');
+                return;
+            }
+
+            const price = parseInt(document.getElementById('product-quantity').dataset.price) || 0;
+            const totalPrice = quantity * price;
+
+            const data = new FormData();
+            data.append('user_id', 1);
+            data.append('product_id', productId);
+            data.append('qty', quantity);
+            data.append('total_price', totalPrice);
+            data.append('address', address);
+            data.append('status', 'pending');
+
+            fetch(`${API_URL}checkout.php`, {
+                method: 'POST',
+                body: data
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    alert('Pesanan berhasil diproses!');
+                    if (response.order_id) {
+                        window.location.href = 'pembayaran.html?order_id=' + response.order_id;
+                    } else {
+                        window.location.href = 'pembayaran.html';
+                    }
+                } else {
+                    alert('Gagal memproses pesanan: ' + response.message);
+                }
+            })
+            .catch(err => {
+                console.error('Kesalahan:', err);
+                alert('Terjadi kesalahan saat memproses pesanan!');
+            });
+        }
+    </script>
+</body>
+</html>

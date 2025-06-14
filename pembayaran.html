@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Pembayaran - Accu Order App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+        }
+        #payment-container {
+            max-width: 500px;
+            margin: 60px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 14px #ccc;
+            padding: 24px;
+        }
+        h2 { color: #1877f2; }
+        .rekening-box {
+            background: #f0f5ff;
+            border: 1px solid #add8e6;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .nomor {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #145db2;
+        }
+        .copy-btn {
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 8px;
+        }
+        .copy-btn:hover {
+            background: #145db2;
+        }
+        #order-info {
+            margin-top: 16px;
+        }
+        .input-section {
+            background: #f9fafb;
+            border: 1px solid #e6e6e6;
+            border-radius: 8px;
+            padding: 18px;
+            margin-top: 22px;
+        }
+        .input-section label {
+            font-weight: bold;
+        }
+        #status-pembayaran {
+            font-weight: bold;
+            padding: 7px 0 7px 0;
+        }
+        .status-menunggu { color: #b57e00; }
+        .status-diterima { color: #177c34; }
+        .status-ditolak { color: #e85c4a; }
+        .btn-kirim {
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 7px 18px;
+            cursor: pointer;
+            margin-top: 8px;
+            font-size: 1rem;
+        }
+        .btn-kirim:disabled {
+            background: #bcd5f8;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="payment-container">
+        <h2>Menu Pembayaran</h2>
+        <div class="rekening-box">
+            <div><b>Silakan transfer ke rekening berikut:</b></div>
+            <div>Bank: <span id="bank-name">BCA</span></div>
+            <div>No. Rekening: 
+                <span class="nomor" id="no-rekening">1234567890</span>
+                <button class="copy-btn" onclick="copyRekening()">Salin</button>
+            </div>
+            <div>Atas Nama: <span id="nama-pemilik">PT. Accu Jaya</span></div>
+        </div>
+        <div id="order-info">
+            <b>ID Pesanan:</b> <span id="order-id">-</span>
+            <br>
+            <span id="status-pembayaran"></span>
+        </div>
+        <div class="input-section">
+            <label>Nomor Rekening Pengirim:</label><br>
+            <input type="text" id="rekening-pengirim" maxlength="30" style="padding:6px;width:90%;font-size:1rem;" placeholder="Masukkan nomor rekening Anda">
+            <br>
+            <button class="btn-kirim" id="kirim-btn" onclick="kirimBukti()" disabled>Kirim Bukti</button>
+            <div id="kirim-status" style="margin-top:7px;min-height:20px;"></div>
+        </div>
+        <div style="margin-top: 20px;">
+            <b>Setelah transfer dan kirim nomor rekening, admin akan memverifikasi pembayaran Anda.</b>
+        </div>
+    </div>
+    <script>
+        // Ambil order_id dari query parameter
+        const orderId = new URLSearchParams(window.location.search).get('order_id');
+        if (orderId) document.getElementById('order-id').textContent = orderId;
+
+        function copyRekening() {
+            const rekening = document.getElementById('no-rekening').textContent;
+            navigator.clipboard.writeText(rekening);
+            alert('Nomor rekening telah disalin!');
+        }
+
+        // Tampilkan status pembayaran dan rekening pengirim jika sudah ada
+        function loadOrder() {
+            if (!orderId) return;
+            fetch(`get_order.php?order_id=${orderId}`)
+                .then(res => res.json())
+                .then(order => {
+                    let status = order.payment_status || "pending";
+                    let statusText = "";
+                    if (status === "pending") statusText = "<span class='status-menunggu'>Belum dibayar / Menunggu verifikasi</span>";
+                    else if (status === "paid") statusText = "<span class='status-diterima'>Sudah dibayar</span>";
+                    else if (status === "rejected") statusText = "<span class='status-ditolak'>Bukti ditolak, silakan kirim ulang</span>";
+                    document.getElementById('status-pembayaran').innerHTML = "<b>Status Pembayaran:</b> " + statusText;
+
+                    // Jika sudah pernah isi rekening pengirim, tampilkan
+                    if (order.sender_account) {
+                        document.getElementById('rekening-pengirim').value = order.sender_account;
+                        document.getElementById('rekening-pengirim').disabled = true;
+                        document.getElementById('kirim-btn').disabled = true;
+                        document.getElementById('kirim-status').innerText = "Nomor rekening pengirim sudah dikirim, menunggu verifikasi admin.";
+                        document.getElementById('kirim-status').style.color = "#b57e00";
+                    } else {
+                        document.getElementById('rekening-pengirim').value = "";
+                        document.getElementById('rekening-pengirim').disabled = false;
+                        document.getElementById('kirim-btn').disabled = true;
+                        document.getElementById('kirim-status').innerText = "";
+                    }
+                });
+        }
+
+        // Aktifkan tombol kirim jika input valid
+        document.getElementById('rekening-pengirim').addEventListener('input', function() {
+            const rekening = this.value.trim();
+            document.getElementById('kirim-btn').disabled = rekening.length < 5;
+            document.getElementById('kirim-status').innerText = "";
+        });
+
+        // Proses kirim nomor rekening pengirim
+        function kirimBukti() {
+            const rekening = document.getElementById('rekening-pengirim').value.trim();
+            if (!rekening || rekening.length < 5 || !orderId) return;
+            const fd = new FormData();
+            fd.append('order_id', orderId);
+            fd.append('sender_account', rekening);
+            document.getElementById('kirim-btn').disabled = true;
+            document.getElementById('kirim-status').style.color = "#b57e00";
+            document.getElementById('kirim-status').innerText = 'Mengirim...';
+            fetch('upload_bukti.php', {
+                method: 'POST',
+                body: fd
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    document.getElementById('kirim-status').style.color = '#177c34';
+                    document.getElementById('kirim-status').innerText = 'Nomor rekening pengirim berhasil dikirim! Menunggu verifikasi admin.';
+                    document.getElementById('rekening-pengirim').disabled = true;
+                    document.getElementById('kirim-btn').disabled = true;
+                    loadOrder();
+                } else {
+                    document.getElementById('kirim-status').style.color = '#e85c4a';
+                    document.getElementById('kirim-status').innerText = response.error || "Kirim gagal.";
+                    document.getElementById('kirim-btn').disabled = false;
+                }
+            })
+            .catch(() => {
+                document.getElementById('kirim-status').style.color = '#e85c4a';
+                document.getElementById('kirim-status').innerText = "Kirim gagal!";
+                document.getElementById('kirim-btn').disabled = false;
+            });
+        }
+
+        // Inisialisasi
+        loadOrder();
+    </script>
+</body>
+</html>

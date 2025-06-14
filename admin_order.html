@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Daftar Pesanan</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f6f9fc;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 26px;
+            text-align: center;
+            color: #fafbfc;
+        }
+         h1 {
+            margin: 0 0 6px 0;
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+        }
+         header {
+            background: #1877f2;
+            color: white;
+            padding: 24px 0 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 14px #b3c4e7;
+            position: relative;
+        }
+        table {
+            width: 96%;
+            margin: 24px auto;
+            border-collapse: collapse;
+            background: #fff;
+            box-shadow: 0 2px 18px #dde6f5;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+        th, td {
+            border: 1px solid #e4e9f2;
+            padding: 10px 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eaf3fe;
+            color: #1976d2;
+        }
+        tr:nth-child(even) { background: #f8fbff; }
+        button, select {
+            padding: 5px 12px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .btn-status {
+            background: #1877f2;
+            color: white;
+            margin-right: 4px;
+            margin-bottom: 3px;
+            transition: background 0.13s;
+        }
+        nav {
+            background: #fff;
+            padding: 8px 0 8px 0;
+            text-align: center;
+            box-shadow: 0 1px 8px #e2e6e9;
+        }
+        .logo {
+            width: 110px;
+            margin-bottom: 8px;
+        }
+        nav a {
+            display: inline-block;
+            margin: 0 18px;
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05rem;
+            padding: 4px 7px;
+            border-radius: 4px;
+            transition: background .15s;
+        }
+        nav a:hover { background: #e6eeff; }
+        .btn-status:hover { background: #145db2; }
+        .btn-cancel {
+            background: #e85c4a;
+            color: white;
+            margin-right: 4px;
+            margin-bottom: 3px;
+        }
+        .btn-cancel:hover { background: #c53c2b; }
+        .alasan-batal {
+            width: 130px;
+            margin-top: 4px;
+            margin-bottom: 4px;
+            font-size: 13px;
+        }
+        .alasan-container {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .batal-info {
+            color: #e85c4a;
+            font-size: 13px;
+        }
+        @media (max-width: 700px) {
+            table, th, td { font-size: 12px;}
+            h1 { font-size: 1.2rem;}
+        }
+    </style>
+</head>
+<body>
+     <header>
+        <img src="logo BARU.png" alt="Logo Pemesanan Accu" class="logo">
+        <h1>Rumah Accu</h1>
+    </header>
+    <nav>
+        <a href="admin dashboard.html" style="background:#e7f4ff;">Dashboard</a>
+        <a href="tambah_produk.html">Tambah Produk</a>
+        <a href="admin_order.html">Pesanan</a>
+        <a href="chat.html">Live Chat</a>
+    </nav>
+    <h1>Daftar Pesanan</h1>
+    <table id="orders-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>Alamat</th>
+                <th>Produk ID</th>
+                <th>Jumlah</th>
+                <th>Total Harga</th>
+                <th>Status</th>
+                <th>Alasan Pembatalan</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data pesanan akan dimuat di sini -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fungsi untuk memuat pesanan
+        function loadOrders() {
+            fetch('get_orderadmin.php')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const tableBody = document.getElementById('orders-table').querySelector('tbody');
+                        tableBody.innerHTML = ''; // Kosongkan tabel
+                        data.orders.forEach(order => {
+                            const row = document.createElement('tr');
+                            // Tampilkan alasan pembatalan jika ada
+                            let alasanPembatalan = order.alasan_batal || '';
+                            if (order.status === 'canceled' && !alasanPembatalan) {
+                                alasanPembatalan = "<span class='batal-info'>Dibatalkan tanpa keterangan</span>";
+                            }
+                            row.innerHTML = `
+                                <td>${order.id}</td>
+                                <td>${order.user_id}</td>
+                                <td>${order.address}</td>
+                                <td>${order.product_id}</td>
+                                <td>${order.qty}</td>
+                                <td>Rp${order.total_price}</td>
+                                <td>${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</td>
+                                <td>${alasanPembatalan}</td>
+                                <td>
+                                    <div class="alasan-container">
+                                        <button class="btn-status" onclick="updateOrderStatus(${order.id}, 'accepted')">Terima</button>
+                                        <button class="btn-status" onclick="updateOrderStatus(${order.id}, 'packed')">Dikemas</button>
+                                        <button class="btn-status" onclick="updateOrderStatus(${order.id}, 'sent')">Dikirim</button>
+                                        <button class="btn-status" onclick="updateOrderStatus(${order.id}, 'done')">Selesai</button>
+                                        <select class="alasan-batal" id="alasan-batal-${order.id}" ${order.status === 'canceled' ? 'disabled' : ''}>
+                                            <option value="">- Alasan Batal -</option>
+                                            <option value="User membatalkan">User membatalkan</option>
+                                            <option value="Stok habis">Stok habis</option>
+                                            <option value="Permintaan admin">Permintaan admin</option>
+                                            <option value="Lainnya">Lainnya</option>
+                                        </select>
+                                        <button class="btn-cancel" onclick="batalPesanan(${order.id})" ${order.status === 'canceled' ? 'disabled' : ''}>Batalkan</button>
+                                    </div>
+                                </td>
+                            `;
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        alert('Gagal memuat pesanan');
+                    }
+                })
+                .catch(err => {
+                    console.error('Kesalahan:', err);
+                    alert('Terjadi kesalahan saat memuat pesanan');
+                });
+        }
+
+        // Fungsi untuk memperbarui status pesanan
+        function updateOrderStatus(orderId, status) {
+            const data = { order_id: orderId, status: status };
+            fetch('Update_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    alert('Status pesanan berhasil diperbarui');
+                    loadOrders(); // Muat ulang daftar pesanan
+                } else {
+                    alert('Gagal memperbarui status pesanan: ' + response.message);
+                }
+            })
+            .catch(err => {
+                console.error('Kesalahan:', err);
+                alert('Terjadi kesalahan saat memperbarui status pesanan');
+            });
+        }
+
+        // Fungsi untuk membatalkan pesanan
+        function batalPesanan(orderId) {
+            const alasan = document.getElementById('alasan-batal-' + orderId).value;
+            if (!alasan) {
+                alert('Pilih alasan pembatalan terlebih dahulu!');
+                return;
+            }
+            const batalData = {
+                order_id: orderId,
+                status: 'canceled',
+                alasan_batal: alasan
+            };
+            fetch('Update_status.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(batalData)
+            })
+            .then(res => res.json())
+            .then(response => {
+                if (response.success) {
+                    alert('Pesanan berhasil dibatalkan');
+                    loadOrders();
+                } else {
+                    alert('Gagal membatalkan pesanan: ' + response.message);
+                }
+            })
+            .catch(err => {
+                console.error('Kesalahan:', err);
+                alert('Terjadi kesalahan saat membatalkan pesanan');
+            });
+        }
+
+        // Muat pesanan saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', loadOrders);
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Register Akun Accu Order App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(90deg,  #f31919, #3882f8);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo {
+      width: 100px;
+      margin: 0 auto 1rem;
+    }
+
+    .register-box {
+    background: #fcfcfc;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+        #register-container {
+            background: purple;
+            padding: 32px 32px 24px 32px;
+            border-radius: 12px;
+            min-width: 320px;
+        }
+
+        header {
+    background: linear-gradient(90deg,  #f31919, #3882f8);
+    color: #fff;
+    padding: 60px 400px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+        header h1 {
+            margin: 0;
+}
+        h2 {
+            text-align: center;
+            color: #f3f4f7;
+        }
+        label {
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #aaa;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        button {
+            width: 100%;
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            padding: 10px 0;
+            border-radius: 5px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #145db2;
+        }
+        #status {
+            min-height: 18px;
+            color: #1e4bef;
+            text-align: center;
+            margin-top: 5px;
+        }
+        .switch {
+            text-align: center;
+            margin-top: 18px;
+        }
+        .switch a {
+            color: #1877f2;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .switch a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<header>
+    <img src="logo BARU.png" alt="Logo Pemesanan Accu" class="logo">
+    <h1>Rumah Accu</h1>
+</header>
+<body>
+    <div id="register-container">
+        <h2>Register</h2>
+        <form id="registerForm">
+            <input type="text" name="username" id="username" required>
+            <input type="password" name="password" id="password" required>
+            <button type="submit" href="login.html">Register</button>
+          </form>
+
+          <div class="switch">
+    Sudah punya akun? <a href="login.html">Login</a>
+</div>
+          
+          <script>
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+              e.preventDefault();
+          
+              const formData = new FormData(this);
+          
+              fetch('http://localhost/project_mpsi/register.php', {
+                method: 'POST',
+                body: formData
+              })
+              .then(res => res.json())
+              .then(data => {
+    if (data.success) {
+        alert('Pendaftaran berhasil!');
+        window.location.href = 'login.html'; // Redirect ke halaman login
+    } else {
+        alert('Gagal: ' + data.error);
+    }
+});
+            });
+          </script>
+          
+</body>
+</html>

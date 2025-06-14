@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Produk - Rumah Accu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #f8fafb, #e0ecff 70%);
+            margin: 0;
+            min-height: 100vh;
+        }
+        header {
+            background: #1877f2;
+            color: white;
+            padding: 24px 0 12px 0;
+            text-align: center;
+            box-shadow: 0 2px 14px #b3c4e7;
+        }
+        .logo {
+            width: 110px;
+            margin-bottom: 8px;
+        }
+        h1 {
+            margin: 0 0 6px 0;
+            font-size: 2.2rem;
+        }
+        nav {
+            background: #fff;
+            padding: 8px 0;
+            text-align: center;
+            box-shadow: 0 1px 8px #e2e6e9;
+        }
+        nav a {
+            display: inline-block;
+            margin: 0 18px;
+            color: #1877f2;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.05rem;
+            padding: 4px 7px;
+            border-radius: 4px;
+            transition: background .15s;
+        }
+        nav a:hover { background: #e6eeff; }
+        #crud-container {
+            max-width: 1100px;
+            margin: 36px auto 0 auto;
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 3px 18px #bdd7fa;
+            padding: 32px 22px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        #crud-form-section {
+            flex: 1;
+            min-width: 290px;
+            max-width: 375px;
+        }
+        #crud-form-section h3 {
+            margin: 0 0 6px 0;
+            color: #1877f2;
+        }
+        #add-product-form label {
+            color: #555;
+            font-size: 15px;
+        }
+        #add-product-form input, #add-product-form select {
+            width: 100%;
+            margin-bottom: 12px;
+            border-radius: 5px;
+            border: 1px solid #c2daf1;
+            padding: 8px 10px;
+            font-size: 15px;
+            background: #f4f8ff;
+            box-sizing: border-box;
+        }
+        #add-product-form button {
+            background: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 22px;
+            font-size: 15px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 8px;
+            box-shadow: 0 2px 6px #c1e0ff4d;
+            transition: background .15s;
+        }
+        #add-product-form button:hover { background: #1557b2; }
+        #add-product-form .hidden { display: none; }
+        #form-status { margin-top: 6px; min-height:20px;}
+        #products-list-crud {
+            flex: 2;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 22px;
+        }
+        .product-card {
+            background: linear-gradient(135deg, #fcfdff 60%, #e7f0fe 100%);
+            border: 1.5px solid #dbeafe;
+            border-radius: 10px;
+            box-shadow: 0 2px 13px #dae9fa;
+            padding: 18px 20px 16px 20px;
+            transition: transform .12s, box-shadow .12s;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .product-card:hover {
+            transform: translateY(-3px) scale(1.025);
+            box-shadow: 0 5px 23px #b3c9e7;
+        }
+        .product-title {
+            font-weight: bold;
+            color: #1877f2;
+            font-size: 1.15rem;
+        }
+        .product-cat {
+            font-size: 13px;
+            color: #5c6d84;
+            margin-bottom: 4px;
+        }
+        .product-stock {
+            font-size: 13px;
+            color: #177c34;
+        }
+        .product-desc {
+            font-size: 14px;
+            color: #444;
+            margin: 7px 0 10px 0;
+        }
+        .product-price {
+            font-size: 1.03rem;
+            font-weight: bold;
+            color: #e07b00;
+        }
+        .crud-btn {
+            background: #ffa502; color: #fff; border: none; cursor: pointer;
+            border-radius: 5px; padding: 5px 16px; font-size: 14px; margin-right: 4px; margin-top: 10px;
+            transition: background .13s;
+        }
+        .crud-btn.delete { background: #e85c4a;}
+        .crud-btn:hover { background: #e1a400;}
+        .crud-btn.delete:hover { background: #c53c2b;}
+        @media (max-width: 900px) {
+            #crud-container { flex-direction: column; gap:12px;}
+            #products-list-crud { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="logo BARU.png" alt="Logo Pemesanan Accu" class="logo">
+        <h1>Rumah Accu - Admin Produk</h1>
+    </header>
+    <nav>
+        <a href="admin dashboard.html">Dashboard</a>
+        <a href="tambah_produk.html" style="background:#e7f4ff;">Tambah Produk</a>
+        <a href="admin_order.html">Pesanan</a>
+        <a href="chat.html" >Live chat</a>
+    </nav>
+    <div id="crud-container">
+        <div id="crud-form-section">
+            <h3 id="form-title">Tambah Produk</h3>
+            <form id="add-product-form" onsubmit="return false;">
+                <label>Nama Produk</label>
+                <input type="text" id="pname" required>
+                <label>Harga</label>
+                <input type="number" id="pprice" required>
+                <label>Stok</label>
+                <input type="number" id="pstock" required>
+                <label>Kategori</label>
+                <select id="pcategory" required>
+                    <option value="mobil">Mobil</option>
+                    <option value="motor">Motor</option>
+                    <option value="truck">Truck</option>
+                    <option value="bus">Bus</option>
+                    <option value="lainnya">Lainnya</option>
+                </select>
+                <label>Deskripsi</label>
+                <input type="text" id="pdesc">
+                <button id="submit-btn" onclick="submitProduct()">Tambah Produk</button>
+                <button type="button" class="hidden" id="cancel-edit-btn" onclick="resetForm()">Batal Edit</button>
+                <div id="form-status"></div>
+            </form>
+        </div>
+        <div id="products-list-crud"></div>
+    </div>
+    <script>
+    // Format Rupiah utility
+    function formatRupiah(angka) {
+        angka = Number(angka) || 0;
+        return 'Rp.' + angka.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    const API_URL = './';
+    let allProducts = [];
+    let editMode = false;
+    let editProductId = null;
+
+    document.addEventListener('DOMContentLoaded', function(){
+        loadProducts();
+    });
+
+    // Tampil produk dan tombol CRUD
+    function loadProducts() {
+        fetch(API_URL + 'products.php')
+        .then(res => res.json())
+        .then(data => {
+            allProducts = data;
+            renderProducts(allProducts);
+        });
+    }
+
+    function renderProducts(products) {
+        let html = '';
+        if(!products.length) html = '<i>Tidak ada produk pada database.</i>';
+        products.forEach(prod => {
+            html += `<div class="product-card">
+                <span class="product-title">${prod.name}</span>
+                <span class="product-cat">${prod.category || 'Lainnya'}</span>
+                <span class="product-stock">Stok: ${prod.stock}</span>
+                <span class="product-desc">${prod.description || ''}</span>
+                <span class="product-price">${formatRupiah(prod.price)}</span>
+                <button class="crud-btn" onclick="editProduct(${prod.id})">Edit</button>
+                <button class="crud-btn delete" onclick="deleteProduct(${prod.id})">Hapus</button>
+            </div>`;
+        });
+        document.getElementById('products-list-crud').innerHTML = html;
+    }
+
+    function submitProduct() {
+        const fd = new FormData();
+        fd.append('name', document.getElementById('pname').value);
+        fd.append('price', document.getElementById('pprice').value);
+        fd.append('stock', document.getElementById('pstock').value);
+        fd.append('category', document.getElementById('pcategory').value);
+        fd.append('description', document.getElementById('pdesc').value);
+
+        let url = API_URL + 'add_product.php';
+        if (editMode) {
+            fd.append('id', editProductId);
+            url = API_URL + 'edit_product.php';
+        }
+
+        fetch(url, { method:'POST', body:fd })
+        .then(res=>res.json()).then(data => {
+            if(data.success) {
+                document.getElementById('form-status').style.color = '#388e3c';
+                document.getElementById('form-status').innerText = editMode ? 'Produk diupdate!' : 'Produk ditambah!';
+                resetForm();
+                loadProducts();
+            } else {
+                document.getElementById('form-status').style.color = '#B71C1C';
+                document.getElementById('form-status').innerText = data.error || 'Gagal!';
+            }
+        });
+    }
+
+    function editProduct(id) {
+        const prod = allProducts.find(p => +p.id === +id);
+        if(!prod) return;
+        editMode = true;
+        editProductId = id;
+        document.getElementById('form-title').innerText = 'Edit Produk';
+        document.getElementById('submit-btn').innerText = 'Update Produk';
+        document.getElementById('cancel-edit-btn').classList.remove('hidden');
+        document.getElementById('pname').value = prod.name;
+        document.getElementById('pprice').value = prod.price;
+        document.getElementById('pstock').value = prod.stock;
+        document.getElementById('pcategory').value = prod.category || 'lainnya';
+        document.getElementById('pdesc').value = prod.description || '';
+    }
+
+    function resetForm() {
+        editMode = false;
+        editProductId = null;
+        document.getElementById('form-title').innerText = 'Tambah Produk';
+        document.getElementById('submit-btn').innerText = 'Tambah Produk';
+        document.getElementById('cancel-edit-btn').classList.add('hidden');
+        document.getElementById('pname').value = '';
+        document.getElementById('pprice').value = '';
+        document.getElementById('pstock').value = '';
+        document.getElementById('pcategory').value = 'mobil';
+        document.getElementById('pdesc').value = '';
+        document.getElementById('form-status').innerText = '';
+    }
+
+    function deleteProduct(id) {
+        if (!confirm('Yakin ingin menghapus produk ini?')) return;
+        const fd = new FormData();
+        fd.append('id', id);
+        fetch(API_URL + 'delete_product.php', { method: 'POST', body: fd })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                loadProducts();
+            } else {
+                alert(data.error || 'Gagal hapus produk!');
+            }
+        });
+    }
+    </script>
+</body>
+</html>

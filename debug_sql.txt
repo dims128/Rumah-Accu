@@ -1,0 +1,800 @@
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Password mismatch for username: hailsatan22
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Password mismatch for username: hailsatan22
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Password mismatch for username: hailsatan22
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Password mismatch for username: hailsatan22
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Password mismatch for username: hailsatan22
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Password mismatch for username: hailsatan22
+Query Result: Array
+(
+    [id] => 4
+    [username] => dimas123
+    [password] => $2y$10$ILduovUIfG6iAQvaEfX0huZEcXzr/afdJaCCoyVTwo6oMCBLT7lHi
+    [role] => user
+)
+
+Login success for username: dimas123 with role: user
+Query Result: Array
+(
+    [id] => 17
+    [username] => akudimas
+    [password] => hailsatan22
+    [role] => user
+)
+
+Password mismatch for username: akudimas
+Query Result: Array
+(
+    [id] => 17
+    [username] => akudimas
+    [password] => hailsatan22
+    [role] => user
+)
+
+Password mismatch for username: akudimas
+Query Result: Array
+(
+    [id] => 17
+    [username] => akudimas
+    [password] => hailsatan22
+    [role] => user
+)
+
+Login success for username: akudimas with role: user
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 20
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 20
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+User not found for username: hailsatan22 with role: admin
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 20
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+Query Result: Array
+(
+    [id] => 20
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 21
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+User not found for username: admin with role: user
+Query Result: Array
+(
+    [id] => 21
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 16
+    [username] => hailsatan22
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: hailsatan22 with role: user
+Query Result: Array
+(
+    [id] => 21
+    [username] => admin
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: admin with role: admin
+User not found for username: dimas123 with role: user
+Query Result: Array
+(
+    [id] => 1
+    [username] => dimas
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: dimas with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 4
+    [username] => admin1
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: admin1 with role: user
+User not found for username: admin1 with role: admin
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Password mismatch for username: 3130023010
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+User not found for username: admin with role: admin
+User not found for username: admin with role: admin
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Password mismatch for username: test
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Password mismatch for username: test
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Password mismatch for username: test
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Password mismatch for username: test
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Password mismatch for username: 3130023010
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Password mismatch for username: 3130023010
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+User not found for username: test with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 1
+    [username] => dimas
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: dimas with role: user
+Query Result: Array
+(
+    [id] => 1
+    [username] => dimas
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: dimas with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+User not found for username: test with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 2
+    [username] => 3130023010
+    [password] => SQSTCCRJO
+    [role] => user
+)
+
+Login success for username: 3130023010 with role: user
+Query Result: Array
+(
+    [id] => 8
+    [username] => myhome
+    [password] => admin123
+    [role] => user
+)
+
+Login success for username: myhome with role: user
+Query Result: Array
+(
+    [id] => 9
+    [username] => bagusdimas
+    [password] => 17agustus45
+    [role] => user
+)
+
+Login success for username: bagusdimas with role: user
+Query Result: Array
+(
+    [id] => 5
+    [username] => test
+    [password] => admin123
+    [role] => admin
+)
+
+Login success for username: test with role: admin
